@@ -1,0 +1,21 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: movieinfo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-react-app
+  template:
+    metadata:
+      labels:
+        app: my-react-app
+    spec:
+      containers:
+        - name: movieinfo
+          image: localhost:5000/movieinfo
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      restartPolicy: Always

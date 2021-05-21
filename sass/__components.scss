@@ -1,0 +1,348 @@
+// Movie thumbnail list
+
+.movie__thumbnail {
+  &-list {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 6rem 2rem;
+    animation: fadein 0.5s;
+    animation-delay: 0.2s;
+    animation-fill-mode: backwards;
+  }
+
+  &-paragraph {
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  @media (min-width: 75em) and (max-width: 87.5em) {
+    &-paragraph {
+      -webkit-line-clamp: 5;
+    }
+  }
+
+  @keyframes fadein {
+    0% {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+  }
+  &-listitem {
+    grid-column: span 3;
+    text-align: center;
+
+    @include respond(tab-port) {
+      grid-column: span 4;
+    }
+    @include respond(phone) {
+      grid-column: span 6;
+      //some how calculate and find the best ratio for images responsiveness ?
+    }
+  }
+
+  &-image {
+    margin: 0 4rem;
+    position: relative;
+    display: block;
+
+    // turn off the hover effect in thumbnail movies
+    @include respond(tab-land) {
+      margin: 0 2rem;
+    }
+    @include respond(desktop) {
+      margin: 0 2rem;
+    }
+    @include respond(phone) {
+      width: 70%;
+      margin: 0 auto;
+    }
+
+    &:hover {
+      transform: translateY(-15px) scale(1.05);
+      &img {
+        box-shadow: $shadow-short-light;
+      }
+    }
+    &:hover > .overlay {
+      opacity: 1;
+    }
+    transition: 250ms all;
+    img {
+      // position: absolute;
+      width: 100%;
+      border-radius: 4px;
+      box-shadow: $shadow-long-dark;
+      height: auto;
+      left: 0;
+      top: 0;
+    }
+    .overlay {
+      padding: 4rem 2rem;
+      font-size: 1.4rem;
+      opacity: 0;
+      transition: 350ms all;
+      position: absolute;
+      content: "";
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 98.6%;
+      color: white;
+      background: rgba(0, 0, 0, 0.5);
+
+      // if screen smaller than 56.25em ~ 900px or it's touch devices then turn off overlay the hover effect
+      @include respond(tab-land) {
+        font-size: 1rem;
+      }
+      @media only screen and (max-width: 56.25em),
+        only screen and (hover: none) {
+        display: none;
+      }
+    }
+  }
+  &-title {
+    font-size: 1.6rem;
+    margin-top: 3rem;
+    font-weight: 400;
+  }
+}
+
+.spinner {
+  position: fixed;
+  height: 60px;
+  width: 60px;
+  border: 3px solid transparent;
+  border-top-color: #55efc4;
+  top: 50%;
+  left: 60%;
+  margin: -30px;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+  z-index: 1000;
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    border: 3px solid transparent;
+    border-radius: 50%;
+  }
+
+  &:before {
+    border-top-color: #0984e3;
+    top: -18px;
+    left: -18px;
+    right: -18px;
+    bottom: -18px;
+    animation: spin 3s linear infinite;
+  }
+
+  &:after {
+    border-top-color: #e84393;
+    top: 9px;
+    left: 9px;
+    right: 9px;
+    bottom: 9px;
+    animation: spin 4s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.btn {
+  padding: 1.5rem 3rem;
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 3rem;
+  font-size: 1.6rem;
+  font-weight: 400;
+  transition: 250ms all;
+  &:hover {
+    transform: translateY(-5px);
+  }
+  &:active {
+    transform: translateY(-1px);
+  }
+  &__category {
+    background: $color-white;
+    color: black;
+
+    @include respond(desktop) {
+      white-space: nowrap;
+    }
+  }
+  &__action {
+    background: transparent;
+    color: $color-white;
+    border: 1px solid $color-white;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      background-color: $color-white;
+      color: $color-black;
+    }
+  }
+  &__loadMoreBtn {
+    &:link,
+    &:visited {
+      border-radius: 10px;
+      background: $green-gradient;
+      color: $color-white;
+      font-size: 2rem;
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 6rem;
+      font-weight: 400;
+      transition: ease-in-out 250ms all;
+    }
+    &:hover {
+      background: $green-gradient-dark;
+    }
+    &:focus {
+      box-shadow: 0 0 0 0.4rem rgba(62, 208, 156, 0.5);
+      outline: none;
+    }
+  }
+}
+
+.readMoreBtn {
+  text-decoration: none;
+  background: $color-white;
+  color: $color-black;
+  padding: 1.5rem 4rem;
+  border: none;
+  border-radius: 3px;
+  font-weight: 400;
+  display: inline-block;
+
+  @include respond(tab-land) {
+    padding: 1rem 3rem;
+  }
+  @include respond(desktop) {
+    padding: 0.75rem 1rem;
+  }
+}
+
+.search {
+  position: fixed;
+  right: 5%;
+  top: 5%;
+  z-index: 999;
+  &__form {
+    position: relative;
+  }
+  &__input {
+    width: 5rem;
+    cursor: pointer;
+    height: 5rem;
+    border-radius: 10px;
+    border: none;
+    background: black;
+    outline: none;
+    transition: 550ms all cubic-bezier(0.75, 0.15, 0.26, 0.98);
+    color: $color-white;
+    font-family: inherit;
+    letter-spacing: 0.2px;
+    font-size: 1.5rem;
+    padding-left: 5rem;
+    box-shadow: 0 1.5rem 2rem rgba($color: #fff, $alpha: 0.15);
+    &:focus {
+      width: 50rem;
+      border-radius: 10px;
+    }
+  }
+  &__label {
+    cursor: pointer;
+  }
+  &__input:focus + &__label > &__icon {
+    left: 5%;
+  }
+
+  &__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    fill: white;
+    transition: 350ms all;
+  }
+}
+
+.error {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &__image-wrapper {
+    position: relative;
+  }
+  &__grey-layer {
+    position: absolute;
+    left: -20%;
+    top: -30%;
+    z-index: -1;
+  }
+  &__image {
+    height: 30rem;
+    margin-bottom: 4rem;
+  }
+  &__paragraph {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+}
+.btn-error {
+  display: flex;
+  align-items: center;
+  color: $color-black;
+  background: transparent;
+  border: $line-black;
+  svg {
+    height: 2.4rem;
+    width: 2.4rem;
+    margin-left: 1rem;
+  }
+}
+
+.trailer-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 350ms all;
+  opacity: 0;
+  visibility: hidden;
+}
+.trailer-wrapper.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.trailer iframe {
+  width: 90rem;
+  height: 60rem;
+}
